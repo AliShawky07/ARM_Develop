@@ -41,24 +41,34 @@ void NVIC_Init(void)
 		INT_Pri_BITs  = (   5 + 8 * (NVIC_Cfg[i].Interrupt_Number % 4)  );
 		
 		
-		#if NVIC_GROUPING_SYSTEM == NVIC_GROUPING_SYSTEM_XXX
-		*Pri_Register |=  ( NVIC_Cfg[i].Group_Periority <<  INT_Pri_BITs );
-		
-		#elif NVIC_GROUPING_SYSTEM == NVIC_GROUPING_SYSTEM_XXY
-		*Pri_Register |=  ( NVIC_Cfg[i].Group_Periority <<  INT_Pri_BITs ) | ( NVIC_Cfg[i].SubGroup_Priority <<  INT_Pri_BITs + 2 );
-		
-		
-		#elif NVIC_GROUPING_SYSTEM == NVIC_GROUPING_SYSTEM_XYY
-		*Pri_Register |=  ( NVIC_Cfg[i].Group_Periority <<  INT_Pri_BITs ) | ( NVIC_Cfg[i].SubGroup_Priority <<  INT_Pri_BITs + 1 );
-		
-		#elif NVIC_GROUPING_SYSTEM == NVIC_GROUPING_SYSTEM_YYY
-		*Pri_Register |=  ( NVIC_Cfg[i].SubGroup_Priority <<  INT_Pri_BITs );
-		
-		#endif
+		switch(NVIC_GROUPING_SYSTEM)
+		{
+			
+			case NVIC_GROUPING_SYSTEM_XXX :
+			*Pri_Register |=  ( NVIC_Cfg[i].Group_Periority <<  INT_Pri_BITs );
+			break;
+			
+			case NVIC_GROUPING_SYSTEM_XXY :
+			*Pri_Register |=  ( NVIC_Cfg[i].Group_Periority <<  INT_Pri_BITs ) | ( NVIC_Cfg[i].SubGroup_Priority <<  INT_Pri_BITs + 2 );
+			break;
+			
+			case NVIC_GROUPING_SYSTEM_XYY :
+			*Pri_Register |=  ( NVIC_Cfg[i].Group_Periority <<  INT_Pri_BITs ) | ( NVIC_Cfg[i].SubGroup_Priority <<  INT_Pri_BITs + 1 );
+			break;
+			 
+			case NVIC_GROUPING_SYSTEM_YYY :
+			*Pri_Register |=  ( NVIC_Cfg[i].SubGroup_Priority <<  INT_Pri_BITs );
+			break;
+			
+			default :
+			
+			break;
+			
+		}
+	
 		
 		
 	}
-	
 	
 	
 	
